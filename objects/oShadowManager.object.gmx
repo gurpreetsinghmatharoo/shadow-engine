@@ -52,7 +52,7 @@ distFading = true; //Distance fading
 baseAlpha = 32; //If distFacing is enabled,
                  //this is the distance beyond which the alpha starts to decrease
 
-//Shadow position
+//Shadow properties
 bottomMask = true; //Whether to draw the shadow at the bottom of the mask
                    //If off, it'll be drawn at the center
 
@@ -82,6 +82,8 @@ shadowOffsetY = 0; //Offset to add to the shadow's y position
 //Scrapped vars
 blurDist = 0.8; //How early should the blur start? (1 = texture height)
 blurDynamic = false; //Should the blur be dynamic, based on the shadow length?
+
+shadowRotate = true; //Should a shadow rotate with its caster's image_angle?
 
 //MOVED TO SHADER: blurPower = 8; //Blur power, how much blurring to apply?
                //No blur at or below 1
@@ -308,7 +310,7 @@ with (all){
             
                 //Sprite
                 //shader_set_uniform_f(other.uniDistC, 1);
-                draw_sprite_ext(sprite_index, image_index, sX, sY, 1, -sLen, 90 + sDir, -1, sAlpha);
+                draw_sprite_ext(sprite_index, image_index, sX, sY, 1, -sLen, (90 + sDir), -1, sAlpha);
             }
             //Cube caster
             else{

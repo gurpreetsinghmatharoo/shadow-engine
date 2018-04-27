@@ -48,6 +48,8 @@ shadowAlpha = 0.5;
 circleSize = 0.6; //Size of the shadow circle (1 = texture width)
 
 //Effects
+blurDist = 0.8; //How early should the blur start? (1 = texture height)
+
 distFading = true; //Distance fading
 baseAlpha = 32; //If distFacing is enabled,
                  //this is the distance beyond which the alpha starts to decrease
@@ -80,7 +82,6 @@ shadowOffsetY = 0; //Offset to add to the shadow's y position
             <kind>1</kind>
             <string>/// INTERNAL
 //Scrapped vars
-blurDist = 0.8; //How early should the blur start? (1 = texture height)
 blurDynamic = false; //Should the blur be dynamic, based on the shadow length?
 
 shadowRotate = true; //Should a shadow rotate with its caster's image_angle?
@@ -301,11 +302,10 @@ with (all){
             //Normal object
             if (!cubeCaster){
                 //Shader
-                //shader_set_uniform_f_array(other.uniUvs, uvs);
-                //shader_set_uniform_f(other.uniDistC, 0);
-                //shader_set_uniform_f(other.uniDistB, bDist);
-                //shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(tex),
-                //    texture_get_texel_height(tex));
+                shader_set_uniform_f_array(other.uniUvs, uvs);
+                shader_set_uniform_f(other.uniDistB, bDist);
+                shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(tex),
+                    texture_get_texel_height(tex));
                 //shader_set_uniform_f(other.uniFade, other.fadeEnable);
             
                 //Sprite
@@ -352,38 +352,6 @@ with (all){
                 
                 draw_primitive_begin(pr_trianglestrip);
                 
-                /*draw_vertex_colour(sX1, sY1, c_black, 1);
-                draw_vertex_colour(sX1, sY2, c_black, 1);
-                draw_vertex_colour(x1, y1, c_white, 1);
-                
-                draw_vertex_colour(sX1, sY2, c_black, 1);
-                draw_vertex_colour(x1, y1, c_white, 1);
-                draw_vertex_colour(x1, y2, c_white, 1);
-                
-                draw_vertex_colour(sX1, sY2, c_black, 1);
-                draw_vertex_colour(sX2, sY2, c_black, 1);
-                draw_vertex_colour(x1, y2, c_white, 1);
-                
-                draw_vertex_colour(sX2, sY2, c_black, 1);
-                draw_vertex_colour(x1, y2, c_white, 1);
-                draw_vertex_colour(x2, y2, c_white, 1);
-                
-                draw_vertex_colour(sX2, sY2, c_black, 1);
-                draw_vertex_colour(sX2, sY1, c_black, 1);
-                draw_vertex_colour(x2, y2, c_white, 1);
-                
-                draw_vertex_colour(sX2, sY1, c_black, 1);
-                draw_vertex_colour(x2, y2, c_white, 1);
-                draw_vertex_colour(x2, y1, c_white, 1);
-                
-                draw_vertex_colour(sX2, sY1, c_black, 1);
-                draw_vertex_colour(x2, y1, c_white, 1);
-                draw_vertex_colour(x1, y1, c_white, 1);
-                
-                draw_vertex_colour(sX1, sY1, c_black, 1);
-                draw_vertex_colour(x2, y1, c_white, 1);
-                draw_vertex_colour(x1, y1, c_white, 1);*/
-                
                 draw_vertex_colour(x1, y1, 0, 1);
                 draw_vertex_colour(sX1, sY1, 0, 1);
                 
@@ -425,15 +393,15 @@ surface_reset_target();
 
 //Final
 shader_set(shSSBlur);
-var tex = surface_get_texture(surf);
-shader_set_uniform_f(uniTexel, texture_get_texel_width(tex),
-    texture_get_texel_height(tex));
-shader_set_uniform_f(uniAlpha, shadowAlpha);
+//var tex = surface_get_texture(surf);
+//shader_set_uniform_f(uniTexel, texture_get_texel_width(tex),
+//    texture_get_texel_height(tex));
+//shader_set_uniform_f(uniAlpha, shadowAlpha);
 //shader_set_uniform_f(uniBlurPower, blurPower);
 //shader_set_uniform_f(uniBlurAcc, blurAccuracy);
 //shader_set_uniform_f(uniOpt, optimize);
 
-draw_surface_ext(surf, cX, cY, 1, 1, 0, shadowColor, 1);
+draw_surface_ext(surf, cX, cY, 1, 1, 0, shadowColor, shadowAlpha);
 
 shader_reset();
 </string>

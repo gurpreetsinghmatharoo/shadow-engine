@@ -28,13 +28,13 @@
             <string>//Show FPS
 show_debug_overlay(1);
 
-//Shadows
+//////////////Shadows
 var shadows = shadows_start(100);
 
 //Add cube as exception
 shadows_exceptions(shadows, oSSCube);
 
-//Player
+/////////////////////////////////////Player
 moveSpeed = 4;
 
 hsp = 0;
@@ -96,7 +96,7 @@ with (all){
         <arguments>
           <argument>
             <kind>1</kind>
-            <string>//Light source position
+            <string>///////Mouse light source position
 oShadowManager.lightX[0] = mouse_x;
 oShadowManager.lightY[0] = mouse_y;
 
@@ -106,11 +106,8 @@ oShadowManager.shadowDir = point_direction(mouse_x, mouse_y, x, y);
 //Shadow length
 if (oShadowManager.lightMode) oShadowManager.shadowLen = point_distance(mouse_x, mouse_y, x, y)/48;
 
-//Shadow blur power
-//oShadowManager.blurPower += mouse_wheel_up() - mouse_wheel_down();
-
 //Shadow blur distance
-//oShadowManager.blurDist += (keyboard_check(vk_right) - keyboard_check(vk_left))/20;
+oShadowManager.blurDist += (mouse_wheel_up() - mouse_wheel_down())/10;
 
 //Movement
 var hor, ver;
@@ -195,11 +192,10 @@ draw_set_blend_mode(bm_normal);
 draw_set_alpha(1);
 
 //Blur
-/*draw_set_font(ftOne);
+draw_set_font(ftOne);
 draw_set_color(0);
-draw_text(32, 32, "Blur power (Wheel): " + string(oShadowManager.blurPower)
-    + "#Blur dist (LR Arrows): " + string(oShadowManager.blurDist));
-draw_set_color(-1);*/
+draw_text(32, 32, "Blur dist (Wheel): " + string(oShadowManager.blurDist));
+draw_set_color(-1);
 </string>
           </argument>
         </arguments>

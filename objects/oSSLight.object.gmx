@@ -28,8 +28,8 @@
             <string>//Add to point light arrays
 var pos = array_length_1d(oShadowManager.lightX);
 
-oShadowManager.lightX[pos] = x;
-oShadowManager.lightY[pos] = y;
+//oShadowManager.lightX[pos] = x;
+//oShadowManager.lightY[pos] = y;
 </string>
           </argument>
         </arguments>

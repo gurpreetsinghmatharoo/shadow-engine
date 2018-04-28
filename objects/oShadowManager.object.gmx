@@ -45,7 +45,7 @@ shadowLen = 1; //Shadow length in comparison to sprite height
 shadowColor = make_color_rgb(0, 5, 53);
 shadowAlpha = 0.5;
 
-circleSize = 0.6; //Size of the shadow circle (1 = texture width)
+circleSize = 0.8; //Size of the shadow circle (1 = texture width)
 
 //Effects
 blurDist = 0.8; //How early should the blur start? (1 = texture height)
@@ -209,7 +209,7 @@ shader_set(shSSWhite);
 //shader_set_uniform_f(uniAlpha2, shadowAlpha);
 //shader_set_uniform_f(uniBlurPower2, blurPower);
 //shader_set_uniform_f(uniBlurAcc2, blurAccuracy);
-//draw_set_blend_mode(bm_add);
+draw_set_blend_mode(bm_add);
 
 with (all){
     var lIn = ds_list_find_index(other.except, object_index)&gt;=0 || 
@@ -249,15 +249,15 @@ with (all){
         //Shadow info
         var w = (uvs[2]-uvs[0])/texture_get_texel_width(tex);
         var r = (w/2)*other.circleSize;
-        var sDist = bbox_bottom - y;
+        var sDist = (bbox_bottom+1) - y;
         
         //Draw circle
         if (!cubeCaster){
-            //shader_reset();
-            //shader_set(shSSAlpha);
+            shader_reset();
+            shader_set(shSSAlpha);
             draw_circle_colour(xx, yy, r, -1, 0, 0);
-            //shader_reset();
-            //shader_set(shSSWhite);
+            shader_reset();
+            shader_set(shSSWhite);
         }
         
         for(var i=0; i&lt;array_length_1d(other.lightX); i++){

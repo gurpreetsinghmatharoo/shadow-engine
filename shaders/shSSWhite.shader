@@ -26,7 +26,7 @@ varying vec4 v_vColour;
 
 //------BLUR CONSTANTS HERE--------
 const bool blurEnable = true;
-const float blurPower = 4.;
+const float blurPower = 3.;
 const float blurAcc = 8.;
 
 //INTERNAL
@@ -59,7 +59,7 @@ void main()
     vec2 point = vec2(newv.x + newv.z/2., uvs.w);
     
     //Distance
-    float dist = sqrt(pow(point.y - v_vTexcoord.y, 2.));
+    float dist = sqrt(pow(point.x - v_vTexcoord.x, 2.) + pow(point.y - v_vTexcoord.y, 2.));
     float distCheck = newv.w * distBase;
     
     float distFac = (dist/distCheck);
@@ -69,7 +69,7 @@ void main()
     float blurFac;
     blurFac = (1.-distFac) * blurDist;
     */
-    
+    if (blurEnable){
     //Blur
     float dirs = 0.;
     
@@ -98,6 +98,7 @@ void main()
     gl_FragColor.a /= dirs;
     
     gl_FragColor.a = (gl_FragColor.a-0.5)*1.; //Normalize
+    }
     
     gl_FragColor *= v_vColour;
     

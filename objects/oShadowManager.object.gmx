@@ -265,6 +265,8 @@ with (all){
             var lX = other.lightX[i];
             var lY = other.lightY[i];
             
+            if (lX==undefined || lY==undefined) continue;
+            
             //Direction
             if (lightMode == 0){
                 sDir = point_direction(x, y, lX, lY)-180;

@@ -70,34 +70,34 @@ void main()
     blurFac = (1.-distFac) * blurDist;
     */
     if (blurEnable){
-    //Blur
-    float dirs = 0.;
-    
-    for(float i=1.; i<blurPower; i++){
-        for(float d=0.; d<pii*2.; d+=pii/blurAcc){
-            vec2 newCoord = v_vTexcoord + vec2(cos(d)*texel.x*i, -sin(d)*texel.y*i);
-            vec4 newFrag = texture2D(gm_BaseTexture, newCoord);
+        //Blur
+        float dirs = 0.;
+        
+        for(float i=1.; i<blurPower; i++){
+            for(float d=0.; d<pii*2.; d+=pii/blurAcc){
+                vec2 newCoord = v_vTexcoord + vec2(cos(d)*texel.x*i, -sin(d)*texel.y*i);
+                vec4 newFrag = texture2D(gm_BaseTexture, newCoord);
+                
+                bool outbound = newCoord.x < uvs.x ||
+                                newCoord.x > uvs.z ||
+                                newCoord.y < uvs.y ||
+                                newCoord.y > uvs.w;
+                
+                float fac = distFac;
+                
+                if (!outbound) gl_FragColor.a += newFrag.a;
+                
+                dirs+=fac;
+            }
             
-            bool outbound = newCoord.x < uvs.x ||
-                            newCoord.x > uvs.z ||
-                            newCoord.y < uvs.y ||
-                            newCoord.y > uvs.w;
-            
-            float fac = distFac;
-            
-            if (!outbound) gl_FragColor.a += newFrag.a;
-            
-            dirs+=fac;
+            //dists+=fac;
         }
         
-        //dists+=fac;
-    }
-    
-    //dirs = max(1., dirs);
-    
-    gl_FragColor.a /= dirs;
-    
-    gl_FragColor.a = (gl_FragColor.a-0.5)*1.; //Normalize
+        //dirs = max(1., dirs);
+        
+        gl_FragColor.a /= dirs;
+        
+        gl_FragColor.a = (gl_FragColor.a-0.5)*1.; //Normalize
     }
     
     gl_FragColor *= v_vColour;

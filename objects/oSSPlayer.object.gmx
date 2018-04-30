@@ -29,10 +29,10 @@
 show_debug_overlay(1);
 
 //////////////Shadows
-var shadows = shadows_start(100);
+shadows_start(100);
 
 //Add cube as exception
-shadows_exceptions(shadows, oSSCube);
+shadows_exceptions(oSSCube);
 
 /////////////////////////////////////Player
 moveSpeed = 4;

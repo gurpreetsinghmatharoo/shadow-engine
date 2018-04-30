@@ -3,7 +3,7 @@
   <name>Shadow_Asset</name>
   <version>1.0.0</version>
   <packageID></packageID>
-  <ProductID></ProductID>
+  <ProductID>ACBD3CFF4E539AD869A0E8E3B4B022DD</ProductID>
   <date>18/04/18</date>
   <license>Free to use, also for commercial games.</license>
   <description></description>
@@ -34,11 +34,25 @@
     <Resource>Scripts\ShadowSystem\shadows_start</Resource>
     <Resource>Scripts\ShadowSystem\shadows_exceptions</Resource>
     <Resource>Scripts\ShadowSystem\cube_caster_create</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_create</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_pos</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_delete</Resource>
     <Resource>Shaders\ShadowSystem\shSSWhite</Resource>
     <Resource>Shaders\ShadowSystem\shSSAlpha</Resource>
     <Resource>Shaders\ShadowSystem\shSSBlur</Resource>
     <Resource>Objects\ShadowSystem\oShadowManager</Resource>
     <Resource>Objects\ShadowSystem\Internal\oSSCubeCaster</Resource>
+    <Resource>Objects\ShadowSystem\Example\oSSPlayer</Resource>
+    <Resource>Objects\ShadowSystem\Example\oSSCoin</Resource>
+    <Resource>Objects\ShadowSystem\Example\oSSCube</Resource>
+    <Resource>Objects\ShadowSystem\Example\oSSLight</Resource>
+    <Resource>Sprites\ShadowSystem\sSSCubeCaster</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSPlayer</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCoin</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCursorSun</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCube</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSLight</Resource>
+    <Resource>Rooms\ShadowSystem\Example\rmSSExample</Resource>
   </IncludedResources>
   <files/>
 </extension>

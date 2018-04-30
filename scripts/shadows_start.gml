@@ -1,4 +1,4 @@
-/// shadows_start(depth, [x, y])
+/// shadows_start(depth)
 
 //Args
 var _dep = argument[0];

@@ -192,7 +192,6 @@ draw_set_blend_mode(bm_normal);
 draw_set_alpha(1);
 
 //Blur
-draw_set_font(ftOne);
 draw_set_color(0);
 draw_text(32, 32, "Blur dist (Wheel): " + string(oShadowManager.blurDist));
 draw_set_color(-1);

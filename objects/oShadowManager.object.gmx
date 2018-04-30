@@ -30,8 +30,8 @@
 lightMode = 0; //Explained in documentation
 
 //Lighting mode 0
-lightX[0] = x; //Light x position
-lightY[0] = y; //Light y position
+lightX[0] = undefined; //First light x position
+lightY[0] = undefined; //First light y position
 dynamicLen = true; //Should the shadow length be dynamic, based on distance?
 baseDist = 32; //Distance at which the shadow length is base (shadowLen below)
                //Only used if dynamicLen is true
@@ -99,6 +99,9 @@ shadowRotate = true; //Should a shadow rotate with its caster's image_angle?
 surf = -1;
 
 //Shader
+uniCube = shader_get_uniform(shSSWhite, "isCube");
+uniCubeCenter = shader_get_uniform(shSSWhite, "cubeCenter");
+
 uniUvs = shader_get_uniform(shSSWhite, "uvs");
 uniDistB = shader_get_uniform(shSSWhite, "distBase");
 uniDistC = shader_get_uniform(shSSWhite, "distChecking");
@@ -199,6 +202,8 @@ if (!surface_exists(surf)){
 //Vars
 var cX = view_xview;
 var cY = view_yview;
+var cW = view_wview;
+var cH = view_hview;
 
 //Surface
 surface_set_target(surf);
@@ -304,6 +309,7 @@ with (all){
             //Normal object
             if (!cubeCaster){
                 //Shader
+                shader_set_uniform_f(other.uniCube, 0);
                 shader_set_uniform_f_array(other.uniUvs, uvs);
                 shader_set_uniform_f(other.uniDistB, bDist);
                 shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(tex),
@@ -317,9 +323,13 @@ with (all){
             //Cube caster
             else{
                 //Surf
-                var cubeSurf = surface_create(view_wview, view_hview);
+                //var cubeSurf = surface_create(cW, cH);
                 
+                //Reset
                 surface_reset_target();
+                shader_reset();
+                
+                //Cube surf
                 surface_set_target(cubeSurf);
                 draw_clear_alpha(0, 0);
             
@@ -342,29 +352,27 @@ with (all){
                 //shader_reset();
                 
                 //Draw rects
-                draw_set_color(c_black);
-                //draw_set_alpha(sAlpha);
+                //draw_set_color(c_black);
                 draw_rectangle(x1, y1, x2, y2, 0);
+                //draw_set_color(-1);
                 draw_rectangle(sX1, sY1, sX2, sY2, 0);
-                //draw_set_alpha(1);
-                draw_set_color(-1);
                 
                 //Triangles
                 //draw_set_blend_mode(bm_add);
                 
                 draw_primitive_begin(pr_trianglestrip);
                 
-                draw_vertex_colour(x1, y1, 0, 1);
-                draw_vertex_colour(sX1, sY1, 0, 1);
+                draw_vertex_colour(x1, y1, -1, 1);
+                draw_vertex_colour(sX1, sY1, -1, 1);
                 
-                draw_vertex_colour(x1, y2, 0, 1);
-                draw_vertex_colour(sX1, sY2, 0, 1);
+                draw_vertex_colour(x1, y2, -1, 1);
+                draw_vertex_colour(sX1, sY2, -1, 1);
                 
-                draw_vertex_colour(x2, y2, 0, 1);
-                draw_vertex_colour(sX2, sY2, 0, 1);
+                draw_vertex_colour(x2, y2, -1, 1);
+                draw_vertex_colour(sX2, sY2, -1, 1);
                 
-                draw_vertex_colour(x2, y1, 0, 1);
-                draw_vertex_colour(sX2, sY1, 0, 1);
+                draw_vertex_colour(x2, y1, -1, 1);
+                draw_vertex_colour(sX2, sY1, -1, 1);
                 
                 draw_primitive_end();
                 
@@ -373,11 +381,24 @@ with (all){
                 //Shader
                 //shader_set(shSSWhite);
                 
-                //Surf
+                //Reset
                 surface_reset_target();
+                
+                //Shader
+                shader_set(shSSWhite);
+                shader_set_uniform_f(other.uniCube, 1);
+                shader_set_uniform_f(other.uniCubeCenter, (x1+cubeW/2)/cW, (y1+cubeH/2)/cH);
+                
+                //Try
+                var cubeTex = surface_get_texture(cubeSurf);
+                shader_set_uniform_f(other.uniUvs, 0, 0, 1, 1);
+                shader_set_uniform_f(other.uniDistB, bDist/4);
+                shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(cubeTex),
+                    texture_get_texel_height(cubeTex));
+                
                 surface_set_target(other.surf);
                 draw_surface_ext(cubeSurf, 0, 0, 1, 1, 0, -1, sAlpha);
-                surface_free(cubeSurf);
+                //surface_free(cubeSurf);
             }
             
             //Break

@@ -9,11 +9,11 @@
   <sounds name="sound"/>
   <sprites name="sprites">
     <sprites name="ShadowSystem">
+      <sprite>sprites\sSSCubeCaster</sprite>
       <sprites name="Example">
         <sprite>sprites\sSSPlayer</sprite>
         <sprite>sprites\sSSCoin</sprite>
         <sprite>sprites\sSSCursorSun</sprite>
-        <sprite>sprites\sSSCubeCaster</sprite>
         <sprite>sprites\sSSCube</sprite>
         <sprite>sprites\sSSLight</sprite>
       </sprites>
@@ -41,9 +41,6 @@
       <shader type="GLSLES">shaders\shSSBlur.shader</shader>
     </shaders>
   </shaders>
-  <fonts name="fonts">
-    <font>fonts\ftOne</font>
-  </fonts>
   <objects name="objects">
     <objects name="ShadowSystem">
       <object>objects\oShadowManager</object>

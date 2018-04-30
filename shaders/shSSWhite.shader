@@ -30,6 +30,10 @@ const float blurPower = 3.;
 const float blurAcc = 8.;
 
 //INTERNAL
+//Cube
+uniform bool isCube;
+uniform vec2 cubeCenter;
+
 uniform vec4 uvs;
 
 uniform vec2 texel;
@@ -47,17 +51,23 @@ uniform bool fade;
 void main()
 {
     gl_FragColor = texture2D( gm_BaseTexture, v_vTexcoord );
-    gl_FragColor.rgb = vec3(1, 1, 1);
     
     //Dist checking
-    //Uv
     vec4 newv = uvs;
     newv.z -= newv.x;
     newv.w -= newv.y;
     
-    //Point
-    vec2 point = vec2(newv.x + newv.z/2., uvs.w);
+    vec2 point;
     
+    if (!isCube){
+        //Point
+        point = vec2(newv.x + newv.z/2., uvs.w);
+    }
+    else{
+        //Point
+        point = cubeCenter;
+    }
+        
     //Distance
     float dist = sqrt(pow(point.x - v_vTexcoord.x, 2.) + pow(point.y - v_vTexcoord.y, 2.));
     float distCheck = newv.w * distBase;
@@ -100,6 +110,7 @@ void main()
         gl_FragColor.a = (gl_FragColor.a-0.5)*1.; //Normalize
     }
     
+    gl_FragColor.rgb = vec3(1, 1, 1);
     gl_FragColor *= v_vColour;
     
     //gl_FragColor.rgb = vec3(1, 1, 1);

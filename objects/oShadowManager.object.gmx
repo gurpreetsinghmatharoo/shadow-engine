@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>/// Customization
 //Lighting
-lightMode = 0; //Explained in documentation
+lightMode = 1; //Explained in documentation
 
 //Lighting mode 0
 lightX[0] = undefined; //First light x position
@@ -55,11 +55,12 @@ baseAlpha = 32; //If distFacing is enabled,
                  //this is the distance beyond which the alpha starts to decrease
 
 //Shadow properties
+maskCenterX = true; //Whether to use the center of the mask (true) or the sprite (false)
 bottomMask = true; //Whether to draw the shadow at the bottom of the mask
                    //If off, it'll be drawn at the center
 
-shadowOffsetX = 0; //Offset to add to the shadow's x position
-shadowOffsetY = 0; //Offset to add to the shadow's y position
+shadowOffsetX = 1; //Offset to add to the shadow's x position
+shadowOffsetY = 1; //Offset to add to the shadow's y position
 </string>
           </argument>
         </arguments>
@@ -84,7 +85,7 @@ shadowOffsetY = 0; //Offset to add to the shadow's y position
 //Scrapped vars
 blurDynamic = false; //Should the blur be dynamic, based on the shadow length?
 
-shadowRotate = true; //Should a shadow rotate with its caster's image_angle?
+shadowRotate = false; //Should a shadow rotate with image_angle?
 
 //MOVED TO SHADER: blurPower = 8; //Blur power, how much blurring to apply?
                //No blur at or below 1
@@ -229,6 +230,19 @@ with (all){
     
     var lightMode = other.lightMode;
     
+    //Instance's shadow position
+    var iX = (x - sprite_xoffset) + sprite_width/2;
+    var iY = y;
+    if (other.maskCenterX){
+        iX = lerp(bbox_left, bbox_right, 0.5);
+    }
+    if (other.bottomMask){
+        iY = bbox_bottom;
+    }
+    
+    //Distance from center
+    var xCenterDist = x - iX;
+    
     //Draw
     if (sprite_exists(sprite_index) &amp;&amp; !lIn){
         //Get texture
@@ -236,13 +250,8 @@ with (all){
         var uvs = sprite_get_uvs(sprite_index, image_index);
         
         //Circle position
-        var xx = x + (sprite_width/2 - sprite_xoffset) - 1;
-        var yy = bbox_bottom - 1;
-        
-        //y position
-        if (!other.bottomMask){
-            yy = y - 1;
-        }
+        var xx = iX - 1;
+        var yy = iY - 1;
         
         //Camera offset
         xx -= cX;
@@ -270,23 +279,23 @@ with (all){
             var lX = other.lightX[i];
             var lY = other.lightY[i];
             
-            if (lX==undefined || lY==undefined) continue;
+            if ((lX==undefined || lY==undefined) &amp;&amp; other.lightMode==0) continue;
             
             //Direction
             if (lightMode == 0){
-                sDir = point_direction(x, y, lX, lY)-180;
+                sDir = point_direction(iX, iY, lX, lY)-180;
                 sLen = other.shadowLen;
                 
                 if (other.dynamicLen){
-                    var dist = min(other.maxDist, point_distance(x, y, lX, lY));
+                    var dist = min(other.maxDist, point_distance(iX, iY, lX, lY));
                     sLen *= dist/other.baseDist;
                 }
             }
             
             //Alpha
             var sAlpha = 1;
-            if (other.distFading){
-                var dist = point_distance(x, y, lX, lY);
+            if (other.distFading &amp;&amp; other.lightMode==0){
+                var dist = point_distance(iX, iY, lX, lY);
                 sAlpha = min(1, other.baseAlpha/dist);
                 
                 //Threshold
@@ -298,6 +307,8 @@ with (all){
             //Shadow position
             var sX = xx + lengthdir_x(sDist * sLen, sDir);
             var sY = yy + lengthdir_y(sDist * sLen, sDir);
+            sX += lengthdir_x(xCenterDist, sDir+90);
+            sY += lengthdir_y(xCenterDist, sDir+90);
             
             //Blur distance
             var bDist = other.blurDist;
@@ -308,17 +319,100 @@ with (all){
             
             //Normal object
             if (!cubeCaster){
-                //Shader
-                shader_set_uniform_f(other.uniCube, 0);
-                shader_set_uniform_f_array(other.uniUvs, uvs);
-                shader_set_uniform_f(other.uniDistB, bDist);
-                shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(tex),
-                    texture_get_texel_height(tex));
-                //shader_set_uniform_f(other.uniFade, other.fadeEnable);
-            
-                //Sprite
-                //shader_set_uniform_f(other.uniDistC, 1);
-                draw_sprite_ext(sprite_index, image_index, sX, sY, 1, -sLen, (90 + sDir), -1, sAlpha);
+                //Rotated
+                if (other.shadowRotate){
+                    /*/Rotation
+                    var p1Dir = point_direction(sprite_xoffset, sprite_yoffset, 0, 0);
+                    var p1Dist = point_distance(sprite_xoffset, sprite_yoffset, 0, 0);
+                    
+                    var p2Dir = point_direction(sprite_xoffset, sprite_yoffset, sprite_width, 0);
+                    var p2Dist = point_distance(sprite_xoffset, sprite_yoffset, sprite_width, 0);
+                    
+                    var p3Dir = point_direction(sprite_xoffset, sprite_yoffset, sprite_width, sprite_height);
+                    var p3Dist = point_distance(sprite_xoffset, sprite_yoffset, sprite_width, sprite_height);
+                    
+                    var p4Dir = point_direction(sprite_xoffset, sprite_yoffset, 0, sprite_height);
+                    var p4Dist = point_distance(sprite_xoffset, sprite_yoffset, 0, sprite_height);
+                    
+                    var x1 = sprite_xoffset + lengthdir_x(p1Dist, p1Dir + image_angle);
+                    var y1 = sprite_yoffset + lengthdir_y(p1Dist, p1Dir + image_angle);
+                    
+                    var x2 = sprite_xoffset + lengthdir_x(p2Dist, p2Dir + image_angle);
+                    var y2 = sprite_yoffset + lengthdir_y(p2Dist, p2Dir + image_angle);
+                    
+                    var x3 = sprite_xoffset + lengthdir_x(p3Dist, p3Dir + image_angle);
+                    var y3 = sprite_yoffset + lengthdir_y(p3Dist, p3Dir + image_angle);
+                    
+                    var x4 = sprite_xoffset + lengthdir_x(p4Dist, p4Dir + image_angle);
+                    var y4 = sprite_yoffset + lengthdir_y(p4Dist, p4Dir + image_angle);
+                    
+                    //Size
+                    var minX = min(x1, x2, x3, x4);
+                    var maxX = max(x1, x2, x3, x4);
+                    var minY = min(y1, y2, y3, y4);
+                    var maxY = max(y1, y2, y3, y4);
+                    
+                    var sprWNew = maxX - minX;
+                    var sprHNew = maxY - minY;
+                    
+                    var diffW = (sprWNew - sprite_width)/2;
+                    var diffH = (sprHNew = sprite_height)/2;
+                
+                    //Surface
+                    var sprSurf = surface_create(sprWNew, sprHNew);
+                    
+                    surface_set_target(sprSurf);
+                    shader_reset();
+                    
+                    draw_sprite_ext(sprite_index, image_index, diffW + sprite_xoffset, diffH + sprite_yoffset,
+                        image_xscale, image_yscale, image_angle, -1, 1);
+                    
+                    surface_reset_target();
+                    shader_set(shSSWhite);
+                    
+                    //Texture
+                    var surfTex = surface_get_texture(sprSurf);
+                    var uvs; uvs[0] = 0; uvs[1] = 0; uvs[2] = 1; uvs[3] = 1;
+                    
+                    //Draw
+                    shader_set_uniform_f(other.uniCube, 0);
+                    shader_set_uniform_f_array(other.uniUvs, uvs);
+                    shader_set_uniform_f(other.uniDistB, bDist);
+                    shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(surfTex),
+                        texture_get_texel_height(surfTex));
+                
+                    //Surface
+                    var oDir = point_direction(sprite_xoffset, sprite_yoffset, 0, 0);
+                    var oDist = point_distance(sprite_xoffset, sprite_yoffset, 0, 0);
+                    
+                    var sDrawDir = 90 + sDir;
+                    
+                    //sX += lengthdir_x(oDist, oDir + sDrawDir);
+                    //sY += lengthdir_y(oDist, oDir + sDrawDir);
+                    
+                    draw_surface_ext(sprSurf, sX, sY, 1, -sLen, sDrawDir, -1, sAlpha);
+                    
+                    shader_reset();
+                    draw_circle_colour(sX, sY, 4, 1, 1, 0);
+                    shader_set(shSSWhite);
+                    
+                    //Free
+                    surface_free(sprSurf);*/
+                }
+                //Unrotated
+                else{
+                    //Shader
+                    shader_set_uniform_f(other.uniCube, 0);
+                    shader_set_uniform_f_array(other.uniUvs, uvs);
+                    shader_set_uniform_f(other.uniDistB, bDist);
+                    shader_set_uniform_f(other.uniTexel2, texture_get_texel_width(tex),
+                        texture_get_texel_height(tex));
+                    //shader_set_uniform_f(other.uniFade, other.fadeEnable);
+                
+                    //Sprite
+                    //shader_set_uniform_f(other.uniDistC, 1);
+                    draw_sprite_ext(sprite_index, image_index, sX, sY, image_xscale, -sLen*image_yscale, (90 + sDir), -1, sAlpha);
+                }
             }
             //Cube caster
             else{

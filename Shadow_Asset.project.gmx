@@ -25,7 +25,8 @@
     <scripts name="ShadowSystem">
       <script>scripts\DOCUMENTATION_SHADOWS.gml</script>
       <script>scripts\shadows_start.gml</script>
-      <script>scripts\shadows_exceptions.gml</script>
+      <script>scripts\shadows_exceptions_add.gml</script>
+      <script>scripts\shadows_exception_delete.gml</script>
       <script>scripts\cube_caster_create.gml</script>
       <scripts name="Light Source">
         <script>scripts\light_source_create.gml</script>

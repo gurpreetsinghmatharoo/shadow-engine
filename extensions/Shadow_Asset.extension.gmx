@@ -30,13 +30,27 @@
   </ConfigOptions>
   <androidPermissions/>
   <IncludedResources>
+    <Resource>Sprites\ShadowSystem\sSSCubeCaster</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSPlayer</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCoin</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCursorSun</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSCube</Resource>
+    <Resource>Sprites\ShadowSystem\Example\sSSLight</Resource>
     <Resource>Scripts\ShadowSystem\DOCUMENTATION_SHADOWS</Resource>
     <Resource>Scripts\ShadowSystem\shadows_start</Resource>
     <Resource>Scripts\ShadowSystem\shadows_exceptions</Resource>
     <Resource>Scripts\ShadowSystem\cube_caster_create</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_create.gml</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_pos.gml</Resource>
+    <Resource>Scripts\ShadowSystem\Light Source\light_source_delete.gml</Resource>
     <Resource>Scripts\ShadowSystem\Light Source\light_source_create</Resource>
     <Resource>Scripts\ShadowSystem\Light Source\light_source_pos</Resource>
     <Resource>Scripts\ShadowSystem\Light Source\light_source_delete</Resource>
+    <Resource>Scripts\ShadowSystem\shadows_exceptions_add</Resource>
+    <Resource>Scripts\ShadowSystem\shadows_exception_delete</Resource>
+    <Resource>Shaders\ShadowSystem\shSSWhite.shader</Resource>
+    <Resource>Shaders\ShadowSystem\shSSAlpha.shader</Resource>
+    <Resource>Shaders\ShadowSystem\shSSBlur.shader</Resource>
     <Resource>Shaders\ShadowSystem\shSSWhite</Resource>
     <Resource>Shaders\ShadowSystem\shSSAlpha</Resource>
     <Resource>Shaders\ShadowSystem\shSSBlur</Resource>
@@ -46,12 +60,6 @@
     <Resource>Objects\ShadowSystem\Example\oSSCoin</Resource>
     <Resource>Objects\ShadowSystem\Example\oSSCube</Resource>
     <Resource>Objects\ShadowSystem\Example\oSSLight</Resource>
-    <Resource>Sprites\ShadowSystem\sSSCubeCaster</Resource>
-    <Resource>Sprites\ShadowSystem\Example\sSSPlayer</Resource>
-    <Resource>Sprites\ShadowSystem\Example\sSSCoin</Resource>
-    <Resource>Sprites\ShadowSystem\Example\sSSCursorSun</Resource>
-    <Resource>Sprites\ShadowSystem\Example\sSSCube</Resource>
-    <Resource>Sprites\ShadowSystem\Example\sSSLight</Resource>
     <Resource>Rooms\ShadowSystem\Example\rmSSExample</Resource>
   </IncludedResources>
   <files/>

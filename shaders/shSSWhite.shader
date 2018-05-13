@@ -50,13 +50,26 @@ uniform bool fade;
 
 void main()
 {
-    gl_FragColor = texture2D( gm_BaseTexture, v_vTexcoord );
-    
     //Dist checking
     vec4 newv = uvs;
     newv.z -= newv.x;
     newv.w -= newv.y;
     
+    float halfW = newv.z/2.;
+    float halfH = newv.w/2.;
+    
+    //Rotation
+    vec2 coord = v_vTexcoord;
+    //float sin_factor = sin(radians(180.));
+    //float cos_factor = cos(radians(180.));
+    //coord = vec2((coord.x - halfW) * (newv.z / newv.w), coord.y - halfH) * mat2(cos_factor, sin_factor, -sin_factor, cos_factor);
+    //coord += 0.5;
+    
+    //Frag
+    gl_FragColor = texture2D(gm_BaseTexture, coord);
+    
+    
+    //Vars
     vec2 point;
     
     if (!isCube){
@@ -69,7 +82,7 @@ void main()
     }
         
     //Distance
-    float dist = sqrt(pow(point.x - v_vTexcoord.x, 2.) + pow(point.y - v_vTexcoord.y, 2.));
+    float dist = sqrt(pow(point.x - coord.x, 2.) + pow(point.y - coord.y, 2.));
     float distCheck = newv.w * distBase;
     
     float distFac = (dist/distCheck);
@@ -85,7 +98,7 @@ void main()
         
         for(float i=1.; i<blurPower; i++){
             for(float d=0.; d<pii*2.; d+=pii/blurAcc){
-                vec2 newCoord = v_vTexcoord + vec2(cos(d)*texel.x*i, -sin(d)*texel.y*i);
+                vec2 newCoord = coord + vec2(cos(d)*texel.x*i, -sin(d)*texel.y*i);
                 vec4 newFrag = texture2D(gm_BaseTexture, newCoord);
                 
                 bool outbound = newCoord.x < uvs.x ||

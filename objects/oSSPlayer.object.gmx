@@ -32,7 +32,7 @@ show_debug_overlay(1);
 shadows_start(100);
 
 //Add cube as exception
-shadows_exceptions(oSSCube);
+shadows_exceptions_add(oSSCube);
 
 /////////////////////////////////////Player
 moveSpeed = 4;
@@ -44,6 +44,9 @@ zsp = 0;
 z = 0;
 
 image_speed = 0.2;
+
+image_xscale = 1;
+image_yscale = 1;
 
 //Cursor
 window_set_cursor(cr_none);

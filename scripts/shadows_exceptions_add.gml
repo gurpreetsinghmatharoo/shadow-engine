@@ -1,4 +1,4 @@
-/// shadows_exceptions(exceptions...)
+/// shadows_exception_add(exceptions...)
 
 var list = oShadowManager.except;
 

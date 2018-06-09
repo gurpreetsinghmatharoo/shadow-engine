@@ -27,7 +27,7 @@
             <kind>1</kind>
             <string>/// Customization
 //Lighting
-lightMode = 1; //Explained in documentation
+lightMode = 0; //Explained in documentation
 
 //Lighting mode 0
 lightX[0] = undefined; //First light x position

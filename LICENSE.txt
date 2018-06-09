@@ -1,0 +1,17 @@
+License
+
+Copyright (c) 2018 gurpreetsinghmatharoo
+
+You can use this for free for any project (be it personal or commercial) as long as
+proper credit is given (to Gurpreet Singh Matharoo).
+
+You can not redistribute or resell it. If you want to share it, just link to this
+repo instead of packing up the files and uploading them somewhere else.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

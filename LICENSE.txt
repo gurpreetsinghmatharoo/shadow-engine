@@ -5,7 +5,7 @@ Copyright (c) 2018 gurpreetsinghmatharoo
 You can use this for free for any project (be it personal or commercial) as long as
 proper credit is given (to Gurpreet Singh Matharoo).
 
-You can not redistribute or resell it. If you want to share it, just link to this
+You can not redistribute or resell this package. If you want to share it, just link to this
 repo instead of packing up the files and uploading them somewhere else.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
